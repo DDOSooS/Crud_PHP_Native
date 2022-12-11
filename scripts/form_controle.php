@@ -1,4 +1,3 @@
-
 <?php session_start();
 var_dump($_SESSION);
 if(isset($_POST['submit'])){
@@ -108,8 +107,9 @@ if(isset($_POST['submit'])){
     // echo $validation;
     //reutrn to registration form 
     if( $validation == 10){
-        
-
+    //     if(isset($_SESSION['users']['getis']))
+    //  header('Location:../admin.php');
+    //     echo "none";
         try{
                 $Db=new PDO('mysql:host=localhost;dbname=Crudnative','root','');
                // echo"CONNECTING SUCCESSFILY";
@@ -127,17 +127,20 @@ if(isset($_POST['submit'])){
             $cin=$_SESSION['users']['Cin']['succes'];
             $diplomat=$_SESSION['users']['Diplomat'];
             $Gender=$_SESSION['users']['Gender'];
-            $id=$_SESSION['users']['getid'];
+          
+            
             if (isset($_SESSION['users']['getid'])) {
-                //update data
-                $sql = "UPDATE `user` SET `name`=?,`lname`=?,`email`=?,`birthdate`=?,`number`=?,`image`=?,`cv`=?,`cin`=?,`diplomat`=?,`gender`=? WHERE id=$id";
-                $stmt= $Db->prepare($sql);
-                $stmt->execute([$name, $lname, $email, $birthdate, $number, $image, $cv, $cin, $diplomt, $gender]);
+                //update data   
+                  $id=$_SESSION['users']['getid'];
+
+                $stmt= $Db->prepare("UPDATE `user` SET `name`=?,`lname`=?,`email`=?,`birthdate`=?,`number`=?,`image`=?,`cv`=?,`cin`=?,`diplomat`=?,`gender`=? WHERE id=$id");
+                $stmt->execute([$name, $lname, $email, $birthdate, $number, $image, $cv, $cin, $diplomat, $gender]);
+                 echo " non ERROR";
                         session_destroy();
-                        header('Location :../admin.php');
-                    }
-            // INSERT INTO `user`( `name`, `lname`, `email`, `birthdate`, `number`, `image`, `cv`, `cin`, `diplomat`, `gender` ) 
-            // VALUES (:name,:lname,:email,:birthdate,:number,:image,:cv,:cin,:diplomat,:gender)
+                    header('Location: ../admin.php');
+
+                     }else{ 
+        
              $pdoQuery = "INSERT INTO `user`( `name`, `lname`, `email`, `birthdate`, `number`, `image`, `cv`, `cin`, `diplomat`, `gender` ) 
             VALUES (:name,:lname,:email,:birthdate,:number,:image,:cv,:cin,:diplomat,:gender)";
     
@@ -147,7 +150,8 @@ if(isset($_POST['submit'])){
             
               //  check if mysql insert query successful
         session_destroy();
-        header('Location: ../index.php');
+      header('Location: ../index.php');
+    }
     }else
         header('Location: ../registration.php');
 }
