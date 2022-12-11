@@ -1,7 +1,9 @@
 <?php session_start();
 var_dump($_SESSION);
+
 if(isset($_GET['id'])){
   $id=$_GET['id'];
+  var_dump($_GET);
    try{
                 $pdo=new PDO('mysql:host=localhost;dbname=Crudnative','root','');
                // echo"CONNECTING SUCCESSFILY";
@@ -22,7 +24,8 @@ if(isset($_GET['id'])){
             $_SESSION['users']['Diplomat']=$personnes[0]['diplomat'];
             $_SESSION['users']['Gender']=$personnes[0]['gender'];
             $_SESSION['users']['getid']=$id;
-            
+
+
 }
 
 ?>
