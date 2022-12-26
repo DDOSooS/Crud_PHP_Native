@@ -1,4 +1,5 @@
 <?php session_start();
+session_destroy();
 ?>
 <html lang="en">
 <head>
@@ -22,7 +23,7 @@
         </div>
       </div>
       <div class="contactForm">
-        <h1>Registaration Form</h1>
+        <h1>Log in Form</h1>
 
         <form method="POST" action="./scripts/login_controle.php" enctype="multipart/form-data">
 

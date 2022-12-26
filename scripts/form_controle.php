@@ -1,5 +1,6 @@
-<?php session_start();
-var_dump($_SESSION);
+<?php
+ session_start();
+
 if(isset($_POST['submit'])){
     $validation=0;
     function test_inputs($input){
@@ -102,14 +103,9 @@ if(isset($_POST['submit'])){
         ++$validation;
         $_SESSION['users']['cv']=$target_file;
     } 
-    // var_dump($_POST);
-    // var_dump($_SESSION['users']);
-    // echo $validation;
-    //reutrn to registration form 
+
     if( $validation == 10){
-    //     if(isset($_SESSION['users']['getis']))
-    //  header('Location:../admin.php');
-    //     echo "none";
+
         try{
                 $Db=new PDO('mysql:host=localhost;dbname=Crudnative','root','');
                // echo"CONNECTING SUCCESSFILY";
@@ -135,8 +131,7 @@ if(isset($_POST['submit'])){
 
                 $stmt= $Db->prepare("UPDATE `user` SET `name`=?,`lname`=?,`email`=?,`birthdate`=?,`number`=?,`image`=?,`cv`=?,`cin`=?,`diplomat`=?,`gender`=? WHERE id=$id");
                 $stmt->execute([$name, $lname, $email, $birthdate, $number, $image, $cv, $cin, $diplomat, $gender]);
-                 echo " non ERROR";
-                        session_destroy();
+                    session_destroy();
                     header('Location: ../admin.php');
 
                      }else{ 

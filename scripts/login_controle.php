@@ -1,55 +1,48 @@
-<?php 
-    if(isset($_POST['submit'])){
-            function input_test($data)
-            {
-                htmlspecialchars($data);
-                trim($data);
-                strip_tags($data);
-                return $data;
-            }
-            $email = $password = " ";
-            $email = input_test($_POST['email']);
-            $password = input_test($_POST['password']);
-            try{
-                $Db=new PDO('mysql:host=localhost;dbname=Crudnative','root','');
-               // echo"CONNECTING SUCCESSFILY";
-            }
-            catch(PDOException $e){
-                echo "ERROR"."\t". $e->getMessage();
-            }
+<?php
+if (isset($_POST['submit'])) {
+    function input_test($data)
+    {
+        htmlspecialchars($data);
+        trim($data);
+        strip_tags($data);
+        return $data;
+    }
+    $email = $password = " ";
+    $email = input_test($_POST['email']);
+    $password = input_test($_POST['password']);
+    try {
+        $Db = new PDO('mysql:host=localhost;dbname=Crudnative', 'root', '');
+        // echo"CONNECTING SUCCESSFILY";
+    } catch (PDOException $e) {
+        echo "ERROR" . "\t" . $e->getMessage();
+    }
 
-            $pdoQuery = "SELECT  * FROM `user` WHERE email=? AND password=?";
-    
-            $pdoResult = $Db->prepare($pdoQuery);
-            
-            $del = $pdoResult->execute([$email,$password]);
-            $count=$pdoResult->rowCount();
-             if ($count == 1)
-             header('Location:../admin.php');
-    else
-        header('Location:../index.php?error=1');
-            // $pdoQuery = "SELECT  * FROM `user` ";
-    
-            // $pdoResult = $Db->prepare($pdoQuery);
-            
-            // $pdoResult->execute();
+    $pdoQuery = "SELECT  * FROM `user` WHERE email=? AND password=? AND type=1";
 
-            // while($row=$pdoResult->fetch()){
-            //     echo $row['email']."<br/>";
-            //      echo $row['password']."<br/>";
-            // }
-    //         $count=$pdoResult->rowCount();
-    // if ($count == 1) {
-    //     echo "login success";
-    //     echo $count;
-    // } else {
-    //     echo "login failure";
-    //     echo $count;
-    // }
+    $pdoResult = $Db->prepare($pdoQuery);
 
+    $del = $pdoResult->execute([$email, $password]);
+    $count = $pdoResult->rowCount();
+    if ($count == 1)
+        header('Location:../admin.php');
+    else if ($count == 0) {
+        $pdoQuery1 = "SELECT  * FROM `user` WHERE email=? AND password=? AND type=0";
 
-            
-              //  check if mysql insert query successful
-           
+        $pdoResult1 = $Db->prepare($pdoQuery1);
+
+        $pdoResult1->execute([$email, $password]);
+        
+        $count1 = $pdoResult1->rowCount();
+
+        if ($count1 == 1){ 
+            while ( $id=$pdoResult1->fetch())
+
+             header('Location:../user.php?userno='.$id[0].'');
         }
+           
+        else
+            header('Location:../index.php?error=1');
+
+    }
+}
 ?>
